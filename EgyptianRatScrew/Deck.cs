@@ -11,19 +11,16 @@ namespace EgyptianRatScrew
     public class Deck : IEnumerable
     {
         private List<Card> set;
+        private int count;
 
         public Deck()
         {
             this.set = new List<Card>();
 
             string[] suits = { "hearts", "clubs", "diamonds", "spades" };
-            List<string> vals = new List<string>{"ace", "king", "queen", "jack"};
+            List<string> vals = new List<string>{"ace", "king", "queen", "jack",
+            "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
-            for(int i = 2; i < 10; i++)
-            {
-                vals.Add(i.ToString());
-            }
-            //Card c;
             foreach(string suit in suits)
             {
                 foreach(string val in vals)
@@ -57,7 +54,7 @@ namespace EgyptianRatScrew
             }
         }
 
-        public int Count ()
+        public int GetCount ()
         {
             return this.set.Count();
         }
