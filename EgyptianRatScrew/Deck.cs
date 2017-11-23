@@ -61,7 +61,9 @@ namespace EgyptianRatScrew
 
         public Card Draw ()
         {
-            return this.set.First();
+            Card c = this.set.First();
+            set.Remove(c);
+            return c;
         }
     }
 }

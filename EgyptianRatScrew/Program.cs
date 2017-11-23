@@ -11,7 +11,7 @@ namespace EgyptianRatScrew
     {
         static void Main(string[] args)
         {
-            //TODO test adding cards to one players hand
+            //other player names
             string[] names = {"Noah", "Emma", "Liam", "Olivia", "William", "Ava",
             "Mason", "Sophia", "James", "Isabellla"};
 
@@ -20,41 +20,44 @@ namespace EgyptianRatScrew
 
             Console.WriteLine("What's you name? ");
             string uname = Console.ReadLine();
-
             Player user = new Player(uname);
+
+            //adds user to player_list upon initilization
+            List<Player> player_list = new List<Player>
+            {
+                user
+            };
+
 
             Console.WriteLine("How many people are playing with you? ");
             int player_count = int.Parse(Console.ReadLine());
-            List<Player> player_list = new List<Player>();
-            player_list.Add(user);
-
-            //TODO how get truly random numbers
-            var rnd = new Random();
             
-
+            //seed for random numvers
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            var byteArray = new byte[4];
+            provider.GetBytes(byteArray);
 
             //creates players
-            for(int i =0; i < player_count; i++)
+            for (int i = 0; i < player_count; i++)
             {
-                int r = rnd.Next(player_count);
+                var r = BitConverter.ToUInt32(byteArray, 0) % player_count;
                 string name = names[r];
                 Player p = new Player(name);
+                player_list.Add(p);
             }
 
-            //TODO find way to deal to all players
-            while(deck.GetCount() > 0)
+            // deal to all players
+            while (deck.GetCount() > 0)
             {
-                foreach(Player p in player_list)
+                foreach (Player p in player_list)
                 {
                     Card c = deck.Draw();
                     p.AddToHand(c);
                 }
             }
 
-            foreach(Player p in player_list)
-            {
-                Console.WriteLine(p.GetName());
-            }
+            int[] player_hands =  (from player in player_list
+                                 select player.CountHand()).ToArray();
 
             Console.ReadLine();
         }
