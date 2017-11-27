@@ -35,6 +35,14 @@ namespace EgyptianRatScrew
             this.hand.Add(c);
         }
 
+        public void AddToHand(List<Card> pile)
+        {
+            foreach(Card c in pile)
+            {
+                this.hand.Add(c);
+            }
+        }
+
         public Card Draw ()
         {
             Card c = this.hand.First();
@@ -42,29 +50,6 @@ namespace EgyptianRatScrew
             return c;
         }
 
-        public static bool IsSandwhich(Card c, Card d, Card e)
-        {
-            if(c.GetValue() == e.GetValue())
-            {
-                return true;
-            }
-            return false;
-        }
 
-        public static bool IsDouble(Card c, Card d)
-        {
-            if(c.GetValue() == d.GetValue())
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /**public static bool IsFourRow (Card c, Card d, Card e, Card f)
-        {
-            string[] vals = { c.GetValue(), d.GetValue(), e.GetValue(), f.GetValue() };
-
-            if(vals[0] == vals[1] + 1 && vals[1] == vals[2] + 1 && vals[2] == vals[3] +1 )
-        } **/
     }
 }
