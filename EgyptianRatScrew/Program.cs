@@ -63,8 +63,43 @@ namespace EgyptianRatScrew
             //gets array of how many cards each player has
             int[] player_hand_count =  (from player in player_list
             select player.CountHand()).ToArray();
-            
-            //TODO need to start play
+
+            //user is at index 0
+            //actual play below
+
+            List<Card> pile = new List<Card>();
+            ConsoleKeyInfo cki;
+            do
+            {
+                
+                while (Console.KeyAvailable == false)
+                {
+                    //loop through all players
+                    foreach(Player p in player_list)
+                    {
+                        if (pile.Count != 0)
+                        {
+                            //TODO needs to be previous player
+                            p.AddToHand(pile);
+                        }
+                        Card c = p.Draw();
+                        pile.Add(c);
+                        Console.WriteLine(p.GetName() + " played " + c.GetValueAndSuit());
+                        Thread.Sleep(1000);
+                        //jump out so user can play
+                        break;
+                    }
+                    cki = Console.ReadKey(true);
+
+                    if (cki.Key == ConsoleKey.Spacebar)
+                    {
+                        user.AddToHand(pile);
+                    }
+                    //TODO exit game and display hands
+                    
+                }
+
+            } while (!player_hand_count.Contains(52));
         }
     }
 }

@@ -24,5 +24,10 @@ namespace EgyptianRatScrew
         {
             return kind.Item2;
         }
+
+        public string GetValueAndSuit ()
+        {
+            return kind.Item2 + " of " + kind.Item1;
+        }
     }
 }
