@@ -64,32 +64,7 @@ namespace EgyptianRatScrew
             int[] player_hand_count =  (from player in player_list
             select player.CountHand()).ToArray();
             
-
-            foreach (Player p in player_list)
-            {
-                
-                
-                do
-                {
-
-                    while (!Console.KeyAvailable)
-                    {
-                        // Do something
-                        Card  c = p.Draw();
-                        Console.WriteLine(c.GetValue() + " of " + c.GetSuit());
-                        Thread.Sleep(1000);
-                        List<Card> pile;
-                        pile.Add(c);
-
-                    }
-
-                    if (Console.ReadKey(true).Key == ConsoleKey.Spacebar)
-                    {
-                        user_input += i;
-                        Console.WriteLine("The user took " + (i - 1));
-                    }
-                } while (!player_hand_count.Contains(52));
-            }
+            //TODO need to start play
         }
     }
 }
