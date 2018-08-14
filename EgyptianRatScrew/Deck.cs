@@ -39,6 +39,7 @@ namespace EgyptianRatScrew
         public void Shuffle ()
         {
             RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            //is less than half of the deck
             int n = 25;
             
             while (n > 1)
