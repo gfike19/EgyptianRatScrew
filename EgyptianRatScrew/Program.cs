@@ -14,43 +14,10 @@ namespace EgyptianRatScrew
     {
         static void Main(string[] args)
         {
-            //other player names
-            string[] names = {"Noah", "Emma", "Liam", "Olivia", "William", "Ava",
-            "Mason", "Sophia", "James", "Isabellla"};
+            List<Player> player_list = Util.GetPlayers();
+            int player_count = player_list.Count;
 
-            Deck deck = new Deck();
-            deck.Shuffle();
-
-            Console.WriteLine("What's your name? ");
-            string uname = Console.ReadLine();
-            Player user = new Player(uname);
-
-            //adds user to player_list upon initilization, user is always player one
-            List<Player> player_list = new List<Player>
-            {
-                user
-            };
-
-            Console.WriteLine("How many people are playing with you? ");
-            int player_count = int.Parse(Console.ReadLine());
-            List<Player> computer = new List<Player>();
-            
-            
-
-            //creates players
-            for (int i = 0; i < player_count; i++)
-            {
-                //seed for random numvers
-                RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
-                var byteArray = new byte[4];
-                provider.GetBytes(byteArray);
-
-                var r = BitConverter.ToUInt32(byteArray, 0) % player_count;
-                string name = names[r];
-                Player p = new Player(name);
-                player_list.Add(p);
-                computer.Add(p);
-            }
+            Player user = player_list[0];
 
             Console.WriteLine("Players are: ");
             foreach(Player p in player_list)
@@ -60,59 +27,68 @@ namespace EgyptianRatScrew
             Console.Write("\n");
 
             // deal to all players
-            while (deck.GetCount() > 0)
-            {
-                foreach (Player p in player_list)
-                {
-                    Card c = deck.Draw();
-                    p.AddToHand(c);
-                }
-            }
+            Util.Deal(player_list);
 
             Console.WriteLine("Hands have been dealt.\n");
 
-            //user is at index 0
-            //actual play below
-
-            //TODO make the pile a player? similar behavior
-            //TODO identify what is needed for actual play, need to modularize code
-            List <Card> pile = new List<Card>();
-            //ConsoleKeyInfo cki;
+            Player pile = new Player();
+            ConsoleKeyInfo cki;
             int idx = 0;
             do
             {
                 Card c = null;
 
-                while (!Console.KeyAvailable)
+                while (Console.KeyAvailable == false)
                 {
                     c = player_list[idx].Draw();
                     Console.WriteLine(player_list[idx].GetName() + " played " + c.GetValueAndSuit());
-                    pile.Add(c);
+                    pile.AddToHand(c);
                     Thread.Sleep(1000);
                     idx ++;
                     idx %= player_count;
                 }
-                //cki = console.readkey(true);
 
-                //if (cki.key == consolekey.spacebar)
+                cki = Console.ReadKey(true);
+                //if (cki.Key == ConsoleKey.Spacebar)
                 //{
-                //    user.addtohand(pile);
+                //    Console.Write("User slapped on: ");
+
+                //    List<Card> cards = pile.DiscardHand();
+                //    //TODO check to see if cards is valid slap, burn two if not
+                //    foreach (Card d in cards)
+                //    {
+                //        Console.Write(d.GetValueAndSuit() + ", ");
+
+                //        user.AddToHand(d);
+                //    }
+                //    Console.Write("\n");
                 //}
 
-                if (Console.ReadKey(true).Key == ConsoleKey.Spacebar)
+                if (cki.Key == ConsoleKey.Spacebar)
                 {
-                    Console.Write("User slapped on: ");
 
-                    foreach (Card d in pile)
+                    if (Slaps.IsSandwhich(pile.GetHand()))
                     {
-                        Console.Write(d.GetValueAndSuit() + ", ");
-                        user.AddToHand(d);
-                        pile.Remove(d);
+                        List<Card> cards = pile.DiscardHand();
+                        Console.Write("User slapped on: ");
+                        foreach (Card d in cards)
+                        {
+                            Console.Write(d.GetValueAndSuit() + ", ");
+
+                            user.AddToHand(d);
+                        }
                     }
-                    Console.Write("\n");
+
+                    else
+                    {
+                        Console.WriteLine("Not a valid slap.");
+                        List<Card> cards = user.Discard(2);
+                        pile.AddToHand(cards);
+                    }
                 }
 
-            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+
+            } while (cki.Key != ConsoleKey.Escape);
             Console.ReadLine();
         }
     }

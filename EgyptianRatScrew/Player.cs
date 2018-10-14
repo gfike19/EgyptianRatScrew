@@ -15,6 +15,10 @@ namespace EgyptianRatScrew
             this.name = name;
         }
 
+        public Player()
+        {
+        }
+
         public string GetName ()
         {
             return this.name;
@@ -50,6 +54,23 @@ namespace EgyptianRatScrew
             return c;
         }
 
+        public List<Card> DiscardHand ()
+        {
+            List<Card> cards = this.hand.Take(this.hand.Count).ToList();
+            this.hand.Clear();
+            return cards;
+        }
 
+        public List<Card>Discard (int num)
+        {
+            List<Card> cards = new List<Card>();
+
+            for(int i = 0; i < num; i++)
+            {
+                Card c = (Card) this.hand.Take(1);
+                this.hand.Remove(c);
+            }
+            return cards;
+        }
     }
 }

@@ -8,12 +8,21 @@ namespace EgyptianRatScrew
 {
     class Slaps
     {
-        public static bool IsSandwhich(Card c, Card d, Card e)
+        public static bool IsSandwhich(List<Card> cards)
         {
-            if (c.GetValue() == e.GetValue())
+            if (cards.Count == 3)
             {
-                return true;
+                Card a = cards[0];
+                Card b = cards[2];
+
+                if (a == b)
+                {
+                    return true;
+                }
+                else
+                    return false;
             }
+
             return false;
         }
 
@@ -25,12 +34,5 @@ namespace EgyptianRatScrew
             }
             return false;
         }
-
-        /**public static bool IsFourRow (Card c, Card d, Card e, Card f)
-        {
-            string[] vals = { c.GetValue(), d.GetValue(), e.GetValue(), f.GetValue() };
-
-            if(vals[0] == vals[1] + 1 && vals[1] == vals[2] + 1 && vals[2] == vals[3] +1 )
-        } **/
     }
 }
