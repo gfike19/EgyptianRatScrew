@@ -10,12 +10,11 @@ namespace EgyptianRatScrew
 {
     public class Deck : IEnumerable
     {
-        private List<Card> set;
-        private int count;
+        public List<Card> set { get; set; }
 
         public Deck()
         {
-            this.set = new List<Card>();
+            set = new List<Card>();
 
             string[] suits = { "hearts", "clubs", "diamonds", "spades" };
             List<string> vals = new List<string>{"ace", "king", "queen", "jack",
@@ -26,7 +25,7 @@ namespace EgyptianRatScrew
                 foreach(string val in vals)
                 {
                    Card c = new Card(suit, val);
-                    this.set.Add(c);
+                    set.Add(c);
                 }
             }
         }
@@ -49,20 +48,15 @@ namespace EgyptianRatScrew
                 while (!(box[0] < n * (Byte.MaxValue / n)));
                 int k = (box[0] % n);
                 n--;
-                Card value = this.set[k];
-                this.set[k] = this.set[n];
-                this.set[n] = value;
+                Card value = set[k];
+                set[k] = set[n];
+                set[n] = value;
             }
-        }
-
-        public int GetCount ()
-        {
-            return this.set.Count();
         }
 
         public Card Draw ()
         {
-            Card c = this.set.First();
+            Card c = set.FirstOrDefault();
             set.Remove(c);
             return c;
         }

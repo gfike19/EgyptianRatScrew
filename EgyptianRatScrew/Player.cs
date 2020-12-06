@@ -21,12 +21,12 @@ namespace EgyptianRatScrew
 
         public string GetName ()
         {
-            return this.name;
+            return name;
         }
 
         public List<Card> GetHand ()
         {
-            return this.hand;
+            return hand;
         }
 
         public int CountHand ()
@@ -36,28 +36,28 @@ namespace EgyptianRatScrew
 
         public void AddToHand (Card c)
         {
-            this.hand.Add(c);
+            hand.Add(c);
         }
 
         public void AddToHand(List<Card> pile)
         {
             foreach(Card c in pile)
             {
-                this.hand.Add(c);
+                hand.Add(c);
             }
         }
 
         public Card Draw ()
         {
-            Card c = this.hand.First();
-            this.hand.Remove(c);
+            Card c = hand.First();
+            hand.Remove(c);
             return c;
         }
 
         public List<Card> DiscardHand ()
         {
-            List<Card> cards = this.hand.Take(this.hand.Count).ToList();
-            this.hand.Clear();
+            List<Card> cards = hand.Take(hand.Count).ToList();
+            hand.Clear();
             return cards;
         }
 
@@ -67,8 +67,9 @@ namespace EgyptianRatScrew
 
             for(int i = 0; i < num; i++)
             {
-                Card c = (Card) this.hand.Take(1);
-                this.hand.Remove(c);
+                Card c = hand[i];
+                hand.Remove(c);
+                cards.Add(c);
             }
             return cards;
         }

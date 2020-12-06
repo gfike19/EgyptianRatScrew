@@ -12,15 +12,14 @@ namespace EgyptianRatScrew
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             List<Player> player_list = Util.GetPlayers();
-            int player_count = player_list.Count;
 
             Player user = player_list[0];
 
             Console.WriteLine("Players are: ");
-            foreach(Player p in player_list)
+            foreach (Player p in player_list)
             {
                 Console.WriteLine(p.GetName());
             }
@@ -32,64 +31,48 @@ namespace EgyptianRatScrew
             Console.WriteLine("Hands have been dealt.\n");
 
             Player pile = new Player();
-            ConsoleKeyInfo cki;
+            ConsoleKeyInfo cki = new ConsoleKeyInfo();
+            bool winnerPresent = IsWinnerPresent(player_list);
             int idx = 0;
             do
             {
-                Card c = null;
-
                 while (Console.KeyAvailable == false)
                 {
-                    c = player_list[idx].Draw();
+                    Card c = player_list[idx].Draw();
                     Console.WriteLine(player_list[idx].GetName() + " played " + c.GetValueAndSuit());
                     pile.AddToHand(c);
                     Thread.Sleep(1000);
-                    idx ++;
-                    idx %= player_count;
+                    idx++;
+                    idx %= player_list.Count;
                 }
 
                 cki = Console.ReadKey(true);
-                //if (cki.Key == ConsoleKey.Spacebar)
-                //{
-                //    Console.Write("User slapped on: ");
-
-                //    List<Card> cards = pile.DiscardHand();
-                //    //TODO check to see if cards is valid slap, burn two if not
-                //    foreach (Card d in cards)
-                //    {
-                //        Console.Write(d.GetValueAndSuit() + ", ");
-
-                //        user.AddToHand(d);
-                //    }
-                //    Console.Write("\n");
-                //}
-
                 if (cki.Key == ConsoleKey.Spacebar)
                 {
-
-                    if (Slaps.IsSandwhich(pile.GetHand()))
+                    List<Card> cards = pile.DiscardHand();
+                    Console.Write("User slapped on: ");
+                    foreach (Card d in cards)
                     {
-                        List<Card> cards = pile.DiscardHand();
-                        Console.Write("User slapped on: ");
-                        foreach (Card d in cards)
-                        {
-                            Console.Write(d.GetValueAndSuit() + ", ");
-
-                            user.AddToHand(d);
-                        }
+                        Console.Write(d.GetValueAndSuit() + ", ");
+                        user.AddToHand(d);
                     }
-
-                    else
-                    {
-                        Console.WriteLine("Not a valid slap.");
-                        List<Card> cards = user.Discard(2);
-                        pile.AddToHand(cards);
-                    }
+                    Console.Write("\n");
                 }
-
-
             } while (cki.Key != ConsoleKey.Escape);
+
             Console.ReadLine();
+        }
+
+        public static bool IsWinnerPresent(List<Player> playerList)
+        {
+            foreach (Player p in playerList)
+            {
+                if (p.CountHand() == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
